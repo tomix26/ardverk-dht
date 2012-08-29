@@ -30,7 +30,7 @@ import org.ardverk.dht.rsrc.Value;
 @Singleton
 public class DefaultMessageFactory extends AbstractMessageFactory {
 
-  private final Identity localhost;
+  protected final Identity localhost;
   
   @Inject
   public DefaultMessageFactory(Identity localhost) {
