@@ -503,10 +503,10 @@ public abstract class MessageDispatcher
       if (cancel()) {
         long time = creationTime.getAgeInMillis();
         
-        if (entity.check(response)) {
-          success = MessageDispatcher.this.handleResponse(callback, entity, 
-              response, time, TimeUnit.MILLISECONDS);
-        } else {
+        success = MessageDispatcher.this.handleResponse(callback, entity, 
+            response, time, TimeUnit.MILLISECONDS);
+        
+        if (!success) {
           MessageDispatcher.this.handleIllegalResponse(callback, 
               entity, response, time, TimeUnit.MILLISECONDS);
         }

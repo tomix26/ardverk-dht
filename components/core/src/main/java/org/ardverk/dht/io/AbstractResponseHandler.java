@@ -215,8 +215,7 @@ public abstract class AbstractResponseHandler<V extends Entity>
       if (isOpen()) {
         synchronized (this) {
           lastResponseTime = TimeStamp.now();
-          processResponse(entity, response, time, unit);
-          success = true;
+          success = processResponse(entity, response, time, unit);
         }
       }
     }
@@ -226,7 +225,7 @@ public abstract class AbstractResponseHandler<V extends Entity>
   /**
    * @see #handleResponse(RequestEntity, ResponseMessage, long, TimeUnit).
    */
-  protected abstract void processResponse(RequestEntity entity,
+  protected abstract boolean processResponse(RequestEntity entity,
       ResponseMessage response, long time, TimeUnit unit)
       throws IOException;
 

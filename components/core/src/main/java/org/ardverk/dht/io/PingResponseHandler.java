@@ -65,9 +65,17 @@ public class PingResponseHandler extends AbstractResponseHandler<PingEntity> {
   }
   
   @Override
-  protected void processResponse(RequestEntity entity, 
+  protected boolean processResponse(RequestEntity entity, 
       ResponseMessage response, long time, TimeUnit unit) {
+	  
+	if (!(response instanceof PingResponse)) {
+	  return false;
+	} else if (entity.getId() != null && !entity.checkContactId(response)) {
+	  return false;
+	}
+	
     setValue(new PingEntity((PingResponse)response, time, unit));
+    return true;
   }
   
   @Override

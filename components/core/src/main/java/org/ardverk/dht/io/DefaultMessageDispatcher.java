@@ -131,7 +131,9 @@ public class DefaultMessageDispatcher extends MessageDispatcher {
       TimeUnit unit) throws IOException {
     
     boolean success = super.handleResponse(callback, entity, response, time, unit);
-    defaultHandler.handleResponse(entity, response, time, unit);
+    if (success)
+      defaultHandler.handleResponse(entity, response, time, unit);
+    
     return success;
   }
 

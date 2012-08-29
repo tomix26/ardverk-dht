@@ -151,15 +151,21 @@ public class StoreResponseHandler extends AbstractResponseHandler<StoreEntity> {
   }
   
   @Override
-  protected synchronized void processResponse(RequestEntity entity, 
+  protected synchronized boolean processResponse(RequestEntity entity, 
       ResponseMessage response, long time, TimeUnit unit) throws IOException {
     StoreResponse message = (StoreResponse)response;
+    
+    if (!(response instanceof StoreResponse) || !entity.checkContactId(response)) {
+  	  return false;
+  	}
     
     try {
       responses.add(message);
     } finally {
       process(1);
     }
+    
+    return true;
   }
 
   @Override

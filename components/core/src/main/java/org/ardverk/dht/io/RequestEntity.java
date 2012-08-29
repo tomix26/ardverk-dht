@@ -21,16 +21,9 @@ import java.net.SocketAddress;
 import org.ardverk.dht.KUID;
 import org.ardverk.dht.lang.Identifier;
 import org.ardverk.dht.message.MessageId;
-import org.ardverk.dht.message.NodeRequest;
-import org.ardverk.dht.message.NodeResponse;
-import org.ardverk.dht.message.PingRequest;
 import org.ardverk.dht.message.PingResponse;
 import org.ardverk.dht.message.RequestMessage;
 import org.ardverk.dht.message.ResponseMessage;
-import org.ardverk.dht.message.StoreRequest;
-import org.ardverk.dht.message.StoreResponse;
-import org.ardverk.dht.message.ValueRequest;
-import org.ardverk.dht.message.ValueResponse;
 import org.ardverk.dht.routing.Contact;
 
 
@@ -79,16 +72,9 @@ public class RequestEntity implements Identifier {
   }
   
   /**
-   * Checks if the {@link ResponseMessage} of the expected type.
-   */
-  boolean check(ResponseMessage response) {
-    return checkType(response) && checkContactId(response);
-  }
-  
-  /**
    * Checks the {@link Contact}'s {@link KUID}
    */
-  private boolean checkContactId(ResponseMessage response) {
+  public boolean checkContactId(ResponseMessage response) {
     if (contactId == null) {
       return (response instanceof PingResponse);
     }
@@ -97,24 +83,6 @@ public class RequestEntity implements Identifier {
     KUID otherId = contact.getId();
     
     return contactId.equals(otherId);
-  }
-  
-  /**
-   * Checks the type of the {@link ResponseMessage}.
-   */
-  private boolean checkType(ResponseMessage response) {
-    if (request instanceof PingRequest) {
-      return response instanceof PingResponse;
-    } else if (request instanceof NodeRequest) {
-      return response instanceof NodeResponse;
-    } else if (request instanceof ValueRequest) {
-      return response instanceof ValueResponse 
-        || response instanceof NodeResponse;
-    } else if (request instanceof StoreRequest) {
-      return response instanceof StoreResponse;
-    }
-    
-    return false;
   }
   
   @Override
