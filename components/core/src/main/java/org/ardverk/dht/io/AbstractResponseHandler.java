@@ -38,7 +38,7 @@ import org.ardverk.lang.TimeStamp;
 /**
  * An abstract base class for {@link ResponseHandler}s.
  */
-abstract class AbstractResponseHandler<V extends Entity> 
+public abstract class AbstractResponseHandler<V extends Entity> 
     extends AbstractMessageHandler implements ResponseHandler<V> {
   
   protected volatile AsyncProcessFuture<V> future = null;

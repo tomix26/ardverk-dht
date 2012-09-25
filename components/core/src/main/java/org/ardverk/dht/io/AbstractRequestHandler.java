@@ -22,7 +22,7 @@ import javax.inject.Provider;
 /**
  * An abstract base class for {@link RequestHandler}s.
  */
-abstract class AbstractRequestHandler 
+public abstract class AbstractRequestHandler 
     extends AbstractMessageHandler implements RequestHandler {
 
   public AbstractRequestHandler(Provider<MessageDispatcher> messageDispatcher) {

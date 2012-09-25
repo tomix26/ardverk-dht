@@ -24,7 +24,7 @@ import org.ardverk.dht.message.MessageFactory;
 /**
  * An abstract base class for different types of message handlers.
  */
-abstract class AbstractMessageHandler {
+public abstract class AbstractMessageHandler {
 
   protected final Provider<MessageDispatcher> messageDispatcher;
   
