@@ -502,11 +502,11 @@ public abstract class MessageDispatcher
       boolean success = false;
       if (cancel()) {
         long time = creationTime.getAgeInMillis();
+        	
+        success = MessageDispatcher.this.handleResponse(callback, entity, 
+            response, time, TimeUnit.MILLISECONDS);
         
-        if (entity.check(response)) {
-          success = MessageDispatcher.this.handleResponse(callback, entity, 
-              response, time, TimeUnit.MILLISECONDS);
-        } else {
+        if (!success) {
           MessageDispatcher.this.handleIllegalResponse(callback, 
               entity, response, time, TimeUnit.MILLISECONDS);
         }

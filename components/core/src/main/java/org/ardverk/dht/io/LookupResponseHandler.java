@@ -37,7 +37,12 @@ import org.ardverk.dht.KUID;
 import org.ardverk.dht.config.NodeConfig;
 import org.ardverk.dht.entity.LookupEntity;
 import org.ardverk.dht.message.MessageType;
+import org.ardverk.dht.message.NodeRequest;
+import org.ardverk.dht.message.NodeResponse;
+import org.ardverk.dht.message.RequestMessage;
 import org.ardverk.dht.message.ResponseMessage;
+import org.ardverk.dht.message.ValueRequest;
+import org.ardverk.dht.message.ValueResponse;
 import org.ardverk.dht.routing.Contact;
 import org.ardverk.dht.routing.RouteTable;
 import org.ardverk.dht.utils.XorComparator;
@@ -208,15 +213,31 @@ abstract class LookupResponseHandler<T extends LookupEntity>
   protected abstract void complete(Outcome outcome);
   
   @Override
-  protected final synchronized void processResponse(RequestEntity entity,
+  protected final synchronized boolean processResponse(RequestEntity entity,
       ResponseMessage response, long time, TimeUnit unit)
       throws IOException {
     
+    RequestMessage request = entity.getRequest();
+    if (!checkResponse(request, response) || !entity.checkContactId(response))
+      return false;
+	
     try {
       processResponse0(entity, response, time, unit);
     } finally {
       process(1);
     }
+    
+    return true;
+  }
+  
+  private boolean checkResponse(RequestMessage request, ResponseMessage response) {
+    if (request instanceof NodeRequest && response instanceof NodeResponse) {
+      return true;
+    } else if (request instanceof ValueRequest
+        && (response instanceof ValueResponse || response instanceof NodeResponse)) {
+      return true;
+    }
+    return false;
   }
   
   /**
