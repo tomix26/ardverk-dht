@@ -17,6 +17,7 @@
 package org.ardverk.dht.message;
 
 import org.ardverk.dht.rsrc.Key;
+import org.ardverk.dht.rsrc.Value;
 
 /**
  * A {@link MessageType#STORE} request.
@@ -27,4 +28,6 @@ public interface StoreRequest extends RequestMessage {
    * Returns the {@link Key}.
    */
   public Key getKey();
+
+  public Value getValue();
 }

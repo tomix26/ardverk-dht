@@ -16,12 +16,10 @@
 
 package org.ardverk.dht.message;
 
-import java.net.SocketAddress;
-
 import org.ardverk.dht.routing.Contact;
-import org.ardverk.dht.rsrc.NoValue;
-import org.ardverk.dht.rsrc.Value;
 import org.ardverk.lang.Epoch;
+
+import java.net.SocketAddress;
 
 /**
  * An abstract implementation of {@link Message}.
@@ -36,20 +34,12 @@ public abstract class AbstractMessage implements Message, Epoch {
   
   private final SocketAddress address;
   
-  private final Value value;
-  
   public AbstractMessage(MessageId messageId, Contact contact, 
       SocketAddress address) {
-    this(messageId, contact, address, NoValue.EMPTY);
-  }
-  
-  public AbstractMessage(MessageId messageId, Contact contact, 
-      SocketAddress address, Value value) {
     
     this.messageId = messageId;
     this.contact = contact;
     this.address = address;
-    this.value = value;
   }
   
   @Override
@@ -70,11 +60,6 @@ public abstract class AbstractMessage implements Message, Epoch {
   @Override
   public SocketAddress getAddress() {
     return address;
-  }
-  
-  @Override
-  public Value getValue() {
-    return value;
   }
 
   @Override

@@ -16,33 +16,23 @@
 
 package org.ardverk.dht.codec.bencode;
 
+import org.ardverk.coding.BencodingOutputStream;
+import org.ardverk.dht.KUID;
+import org.ardverk.dht.lang.IntegerValue;
+import org.ardverk.dht.lang.StringValue;
+import org.ardverk.dht.message.*;
+import org.ardverk.dht.routing.Contact;
+import org.ardverk.dht.rsrc.Key;
+import org.ardverk.dht.rsrc.Value;
+import org.ardverk.version.Vector;
+import org.ardverk.version.VectorClock;
+
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 import java.util.Map;
-
-import org.ardverk.coding.BencodingOutputStream;
-import org.ardverk.dht.KUID;
-import org.ardverk.dht.lang.IntegerValue;
-import org.ardverk.dht.lang.StringValue;
-import org.ardverk.dht.message.Message;
-import org.ardverk.dht.message.MessageId;
-import org.ardverk.dht.message.NodeRequest;
-import org.ardverk.dht.message.NodeResponse;
-import org.ardverk.dht.message.PingRequest;
-import org.ardverk.dht.message.PingResponse;
-import org.ardverk.dht.message.StoreRequest;
-import org.ardverk.dht.message.StoreResponse;
-import org.ardverk.dht.message.ValueRequest;
-import org.ardverk.dht.message.ValueResponse;
-import org.ardverk.dht.routing.Contact;
-import org.ardverk.dht.rsrc.Key;
-import org.ardverk.dht.rsrc.NoValue;
-import org.ardverk.dht.rsrc.Value;
-import org.ardverk.version.Vector;
-import org.ardverk.version.VectorClock;
 
 
 /**
@@ -195,11 +185,6 @@ public class MessageOutputStream extends BencodingOutputStream {
       default:
         throw new IllegalArgumentException("opcode=" + opcode);
     }
-    
-    Value value = message.getValue();
-    if (!(value instanceof NoValue)) {
-      writeValue(value);
-    }
   }
   
   private void writePingRequest(PingRequest message) throws IOException {
@@ -226,12 +211,15 @@ public class MessageOutputStream extends BencodingOutputStream {
   }
   
   private void writeValueResponse(ValueResponse message) throws IOException {
+    writeValue(message.getValue());
   }
   
   private void writeStoreRequest(StoreRequest message) throws IOException {
     writeKey(message.getKey());
+    writeValue(message.getValue());
   }
   
   private void writeStoreResponse(StoreResponse message) throws IOException {
+    writeValue(message.getValue());
   }
 }

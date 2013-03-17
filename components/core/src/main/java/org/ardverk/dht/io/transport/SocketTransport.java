@@ -16,22 +16,6 @@
 
 package org.ardverk.dht.io.transport;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.Closeable;
-import java.io.FilterInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.InetAddress;
-import java.net.InetSocketAddress;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.net.SocketAddress;
-import java.net.SocketException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
-
 import org.ardverk.concurrent.ExecutorUtils;
 import org.ardverk.dht.KUID;
 import org.ardverk.dht.codec.MessageCodec;
@@ -41,14 +25,18 @@ import org.ardverk.dht.codec.bencode.BencodeMessageCodec;
 import org.ardverk.dht.message.Message;
 import org.ardverk.dht.message.RequestMessage;
 import org.ardverk.dht.message.ResponseMessage;
-import org.ardverk.dht.rsrc.NoValue;
-import org.ardverk.dht.rsrc.Value;
 import org.ardverk.dht.utils.Idle;
 import org.ardverk.io.IoUtils;
 import org.ardverk.io.ProgressInputStream;
 import org.ardverk.net.NetworkUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.*;
+import java.net.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
 public class SocketTransport extends AbstractTransport implements Closeable {
 
@@ -230,18 +218,11 @@ public class SocketTransport extends AbstractTransport implements Closeable {
           encoder = createEncoder(client);
           encoder.write(request);
           encoder.flush();
-          
-          Idle idle = new Idle();
-          decoder = createDecoder(client, idle);
+
+          decoder = createDecoder(client, null);
           
           ResponseMessage response = (ResponseMessage)decoder.read();
-          boolean hasContent = handleContent(response);
-          
-          boolean success = handleResponse(response);
-          
-          if (success && hasContent) {
-            idle.await(10L, TimeUnit.SECONDS);
-          }
+          handleResponse(response);
           
         } catch (Exception err) {
           uncaughtException(client, err);
@@ -296,14 +277,6 @@ public class SocketTransport extends AbstractTransport implements Closeable {
     } else {
       LOG.error("Exception", t);
     }
-  }
-  
-  private static boolean handleContent(Message message) {
-    Value value = message.getValue();
-    if (!(value instanceof NoValue)) {
-      return true;
-    }
-    return false;
   }
   
   private static void close(Socket client, Closeable... closeable) {

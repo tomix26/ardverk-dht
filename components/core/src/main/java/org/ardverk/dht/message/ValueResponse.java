@@ -17,8 +17,12 @@
 package org.ardverk.dht.message;
 
 
+import org.ardverk.dht.rsrc.Value;
+
 /**
  * A {@link MessageType#FIND_VALUE} response.
  */
 public interface ValueResponse extends LookupResponse {
+
+  public Value getValue();
 }

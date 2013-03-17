@@ -16,10 +16,9 @@
 
 package org.ardverk.dht.message;
 
-import java.net.SocketAddress;
-
 import org.ardverk.dht.routing.Contact;
-import org.ardverk.dht.rsrc.Value;
+
+import java.net.SocketAddress;
 
 /**
  * An abstract implementation of {@link RequestMessage}.
@@ -30,10 +29,5 @@ public abstract class AbstractRequestMessage extends AbstractMessage
   public AbstractRequestMessage(MessageId messageId, 
       Contact contact, SocketAddress address) {
     super(messageId, contact, address);
-  }
-
-  public AbstractRequestMessage(MessageId messageId, Contact contact,
-      SocketAddress address, Value value) {
-    super(messageId, contact, address, value);
   }
 }

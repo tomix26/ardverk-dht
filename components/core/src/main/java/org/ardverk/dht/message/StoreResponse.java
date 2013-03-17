@@ -16,8 +16,12 @@
 
 package org.ardverk.dht.message;
 
+import org.ardverk.dht.rsrc.Value;
+
 /**
  * A {@link MessageType#STORE} response.
  */
 public interface StoreResponse extends ResponseMessage {
+
+  public Value getValue();
 }
