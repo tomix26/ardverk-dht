@@ -15,26 +15,26 @@ public class ConfigProvider {
   }
   
   public BootstrapConfig get(BootstrapConfig config) {
-    return config != null ? cf.newBootstrapConfig() : config;
+    return config == null ? cf.newBootstrapConfig() : config;
   }
   
   public PingConfig get(PingConfig config) {
-    return config != null ? cf.newPingConfig() : config;
+    return config == null ? cf.newPingConfig() : config;
   }
   
   public ValueConfig get(ValueConfig config) {
-    return config != null ? cf.newGetConfig() : config;
+    return config == null ? cf.newGetConfig() : config;
   }
   
   public PutConfig get(PutConfig config) {
-    return config != null ? cf.newPutConfig() : config;
+    return config == null ? cf.newPutConfig() : config;
   }
   
   public QuickenConfig get(QuickenConfig config) {
-    return config != null ? cf.newQuickenConfig() : config;
+    return config == null ? cf.newQuickenConfig() : config;
   }
   
   public NodeConfig get(NodeConfig config) {
-    return config != null ? cf.newLookupConfig() : config;
+    return config == null ? cf.newLookupConfig() : config;
   }
 }
